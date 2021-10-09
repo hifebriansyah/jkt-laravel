@@ -1,5 +1,9 @@
 <?php
 	$cat = $_GET['cat'] ?? "home-appliance";
+	$key = $_GET['key'] ?? "";
+	if($key != "") {
+		$cat = "";
+	}
 	$admin = $_GET['admin'] ?? 0;
 ?>
 
@@ -33,7 +37,7 @@
 			border: 1px solid #93CAED;
 			margin-right: 8px;
 			margin-bottom: 8px;
-			border-radius:16px;
+			border-radius: 8px;
 		}
 
 		a.active{
@@ -43,9 +47,28 @@
 		}
 
 		div {
+			margin-bottom: 16px;
+		}
+
+		form {
 			margin-top: 32px;
 			margin-bottom: 16px;
 		}
+
+		input {
+			padding: 8px 16px;
+			border-radius: 8px;
+			max-width: 700px;
+			border: 1px solid #ddd !important;
+			font-size: 24px;
+		}
+
+
+		input[type=submit] {
+			cursor: pointer;
+		}
+
+		*:focus {outline:0px none transparent;}
 
 		<?php if(!$admin) { ?>
 			.admin {
@@ -58,9 +81,14 @@
 </head>
 <body>
 	<h1>Toko Raka</h1>
-	<p>Harga untuk hari : <?= date('Y-m-d H:i:s') ?></p>
+	<p>Harga untuk <?= date('Y-m-d H:i:s') ?></p>
 	<p>Hubungi wa 08989090112 untuk pesan</p>
-	<p>Pembayarn wajib melalui tokopedia</p>
+	<p>Pembayaran boleh melalui tokopedia</p>
+
+	<form action="">
+		<input type="text" name="key" value="<?= $key ?>" placeholder="kata kunci">
+		<input type="submit" value="cari">
+	</form>
 
 	<div>
 		<a href="?cat=electronic" class="<?= $cat == 'electronic' ? 'active' : '' ?>">electronic</a>
@@ -76,14 +104,14 @@
 	<table>
 		<thead>
 			<tr>
-				<th>No</th>
-				<th>img</th>
-				<th>buy</th>
-				<th>sell</th>
+				<th width="1">No</th>
+				<th width="1">img</th>
+				<th width="1">buy</th>
+				<th width="1">sell</th>
 				<th class="admin">min</th>
 				<th class="admin">max</th>
 				<th class="admin">potential</th>
-				<th>desc</th>
+				<th class="admin">desc</th>
 				<th>title</th>
 				<th class="admin">link</th>
 			</tr>
@@ -100,7 +128,7 @@
 
 		function getData(page) {
 			$.ajax({
-				url: "data.php?page="+page+"&cat=<?= $_GET['cat'] ?? "home-appliance" ?>"
+				url: "data.php?page="+page+"&cat=<?= $cat ?>&key=<?= $key ?>"
 			})
 			.done(function( data ) {
 				data = data.replace(/\r?\n|\r/, "")

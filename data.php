@@ -2,12 +2,20 @@
 	include 'simple_html_dom.php';
 
 	$ongkir = 9000;
-	$jasa = 5000;
+	$jasaSuplier = 5000;
+	$jasaToped = 0.005;
 	$margin = 0.1;
+	$asuransi = 0.002;
 
 	$type = $_GET['cat'];
+	$key = "";
 
-	$url = "https://www.jakartanotebook.com/".$type."?show=100&sort=newitem&price=&sku=&ready=0yjwK5";
+	if($_GET['key'] != '') {
+		$type = 'search';
+		$key = '&key='.$_GET['key'];
+	}
+
+	$url = "https://www.jakartanotebook.com/".$type."?show=40&sort=newitem&price=&sku=&ready=0yjwK5".$key;
 
     $results = [];
 
@@ -17,11 +25,12 @@
     foreach ($products as $key => $product) {
     	if($product->find('.product-list__price', 0)) {
     		try {
-	    		$buy = stripPrice($product->find('.product-list__price', 0)->plaintext);
-	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy);
+    			$buy = stripPrice($product->find('.product-list__price', 0)->plaintext);
+	    		$buy = $buy + (ceil($buy * $asuransi / 100) * 100) + (ceil($buy * $jasaToped / 100) * 100)  + $jasaSuplier;
+	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy) + $jasaSuplier;
 
-	    		$minimum = ($buy) + ($buy * $margin) + $jasa;
-	    		$maximum = ($recommend) + $jasa + $ongkir;
+	    		$minimum = ($buy) + ($buy * $margin);
+	    		$maximum = ($recommend) + $ongkir;
 
 		    	$results[] = [
 		    		'img' => $product->find('img', 0)->getAttribute('src'),
@@ -55,7 +64,7 @@
 			<td class="admin"><?= $row['minimum'] ?></td>	
 			<td class="admin"><?= $row['maximum'] ?></td>
 			<td class="admin" style="white-space: nowrap;"><?= $row['pontential'] ?></td>
-			<td>
+			<td class="admin">
 				<?= $row['desc'] ?><br/><br/>
 				No return<br/>
 				No Refund<br/>
