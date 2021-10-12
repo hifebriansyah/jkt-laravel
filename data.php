@@ -1,12 +1,9 @@
 <?php 
+	ini_set('display_errors', 0);
+
 	include 'simple_html_dom.php';
 
-	$ongkir = 9000;
-	$jasaSuplier = 5000;
-	$jasaToped = 0.005;
-	$margin = 0.1;
-	$asuransi = 0.002;
-
+	$config = include 'config.php';
 	$type = $_GET['cat'];
 	$key = "";
 
@@ -26,11 +23,11 @@
     	if($product->find('.product-list__price', 0)) {
     		try {
     			$buy = stripPrice($product->find('.product-list__price', 0)->plaintext);
-	    		$buy = $buy + (ceil($buy * $asuransi / 100) * 100) + (ceil($buy * $jasaToped / 100) * 100)  + $jasaSuplier;
-	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy) + $jasaSuplier;
+	    		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
+	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy) + $config['jasaSuplier'];
 
-	    		$minimum = ($buy) + ($buy * $margin);
-	    		$maximum = ($recommend) + $ongkir;
+	    		$minimum = ($buy) + ($buy * $config['margin']);
+	    		$maximum = ($recommend) + $config['ongkir'];
 
 		    	$results[] = [
 		    		'img' => $product->find('img', 0)->getAttribute('src'),

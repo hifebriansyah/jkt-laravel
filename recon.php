@@ -41,8 +41,10 @@
 				<th width="1">No</th>
 				<th width="1">image</th>
 				<th width="1">stok</th>
-				<th width="1">harga</th>
-				<th>link</th>
+				<th width="1">buy</th>
+				<th width="1">sell</th>
+				<th>slug</th>
+				<th width="1">link</th>
 			</tr>
 		</thead>
 		<tbody>

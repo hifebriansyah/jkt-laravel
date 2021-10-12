@@ -4,7 +4,9 @@
 	if($key != "") {
 		$cat = "";
 	}
-	$admin = $_GET['admin'] ?? 0;
+	$admin = isset($_GET['admin'])
+		? '&admin='.$_GET['admin']
+		: '';
 ?>
 
 <!DOCTYPE html>
@@ -87,19 +89,24 @@
 
 	<form action="">
 		<input type="text" name="key" value="<?= $key ?>" placeholder="kata kunci">
+
+		<?php if($admin) { ?>
+			<input type="hidden" name="admin" value="1">
+		<?php } ?>
+
 		<input type="submit" value="cari">
 	</form>
 
 	<div>
-		<a href="?cat=electronic" class="<?= $cat == 'electronic' ? 'active' : '' ?>">electronic</a>
-		<a href="?cat=home-appliance" class="<?= $cat == 'home-appliance' ? 'active' : '' ?>">home appliance</a>
-		<a href="?cat=toys-kids-and-baby" class="<?= $cat == 'toys-kids-and-baby' ? 'active' : '' ?>">toys kids and baby</a>
-		<a href="?cat=hobby" class="<?= $cat == 'hobby' ? 'active' : '' ?>">hobby</a>
-		<a href="?cat=sport-and-outdoor" class="<?= $cat == 'sport-and-outdoor' ? 'active' : '' ?>">sport and outdoor</a>
-		<a href="?cat=fashion-make-up-and-beauty-care" class="<?= $cat == 'fashion-make-up-and-beauty-care' ? 'active' : '' ?>">fashion make up and beauty care</a>
-		<a href="?cat=pc-and-laptop" class="<?= $cat == 'pc-and-laptop' ? 'active' : '' ?>">pc and laptop</a>
-		<a href="?cat=photography" class="<?= $cat == 'photography' ? 'active' : '' ?>">photography</a>
-		<a href="?cat=smartphone-and-tablet" class="<?= $cat == 'smartphone-and-tablet' ? 'active' : '' ?>">smartphone and tablet</a>
+		<a href="?cat=electronic<?= $admin ?>" class="<?= $cat == 'electronic' ? 'active' : '' ?>">electronic</a>
+		<a href="?cat=home-appliance<?= $admin ?>" class="<?= $cat == 'home-appliance' ? 'active' : '' ?>">home appliance</a>
+		<a href="?cat=toys-kids-and-baby<?= $admin ?>" class="<?= $cat == 'toys-kids-and-baby' ? 'active' : '' ?>">toys kids and baby</a>
+		<a href="?cat=hobby<?= $admin ?>" class="<?= $cat == 'hobby' ? 'active' : '' ?>">hobby</a>
+		<a href="?cat=sport-and-outdoor<?= $admin ?>" class="<?= $cat == 'sport-and-outdoor' ? 'active' : '' ?>">sport and outdoor</a>
+		<a href="?cat=fashion-make-up-and-beauty-care<?= $admin ?>" class="<?= $cat == 'fashion-make-up-and-beauty-care' ? 'active' : '' ?>">fashion make up and beauty care</a>
+		<a href="?cat=pc-and-laptop<?= $admin ?>" class="<?= $cat == 'pc-and-laptop' ? 'active' : '' ?>">pc and laptop</a>
+		<a href="?cat=photography<?= $admin ?>" class="<?= $cat == 'photography' ? 'active' : '' ?>">photography</a>
+		<a href="?cat=smartphone-and-tablet<?= $admin ?>" class="<?= $cat == 'smartphone-and-tablet' ? 'active' : '' ?>">smartphone and tablet</a>
 	</div>
 	<table>
 		<thead>
@@ -128,7 +135,7 @@
 
 		function getData(page) {
 			$.ajax({
-				url: "data.php?page="+page+"&cat=<?= $cat ?>&key=<?= $key ?>"
+				url: "data.php?page="+page+"&cat=<?= $cat ?>&key=<?= urlencode($key) ?>"
 			})
 			.done(function( data ) {
 				data = data.replace(/\r?\n|\r/, "")
