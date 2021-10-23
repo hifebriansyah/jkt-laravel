@@ -25,20 +25,21 @@
     			$buy = stripPrice($product->find('.product-list__price', 0)->plaintext);
 	    		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
 	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy) + $config['jasaSuplier'];
+	    		$minimum = ceil(($buy + ($buy * $config['margin'])) / 1000) * 1000;
 
-	    		$minimum = ($buy) + ($buy * $config['margin']);
-	    		$maximum = ($recommend) + $config['ongkir'];
+		    	$link = $product->find('a', 0)->getAttribute('href');
+		    	$links = explode('/', $link);	
+		    	$slug = $links[count($links) - 1];
 
 		    	$results[] = [
-		    		'img' => $product->find('img', 0)->getAttribute('src'),
-		    		'buy' => $buy,
-		    		'recommend' => $recommend,
-		    		'minimum' => $minimum,
-		    		'maximum' => $maximum,
-		    		'pontential' => ($minimum - $buy) . '-' .($maximum - $buy),
-		    		'desc' => $product->find('.product-list__p', 0)->plaintext,
+		    		'src' => $product->find('img', 0)->getAttribute('src'),
+		    		'buy' => number_format($buy, 0, ',', '.'),
+		    		'recommend' => number_format($recommend, 0, ',', '.'),
+		    		'minimum' => number_format($minimum, 0, ',', '.'),
+		    		'desc' => $detailBox,
 		    		'title' => $product->find('a', 0)->getAttribute('title'),
-		    		'link' => $product->find('a', 0)->getAttribute('href'),
+		    		'slug' => $slug,
+		    		'link' => $link,
 		    	];
     		} catch (Exception $e) {
     			
@@ -52,23 +53,28 @@
 ?>
 
 <?php if (count($results) > 0) { ?>
-	<?php foreach ($results as $key => $row): array_map('htmlentities', $row); ?>
-		<tr>
+	<?php foreach ($results as $key => $row) { array_map('htmlentities', $row); ?>
+		<tr class="need-detail" data-page="<?= $row['link'] ?>">
 			<td style="white-space: nowrap;"><?= $_GET['page'].'-'.($key+1) ?></td>
-			<td><img height="150" src="<?= $row['img'] ?>"></td>
+			<td>
+				<img src="<?= $row['src'] ?>">
+				<div class="images"></div>
+			</td>
 			<td><?= $row['buy'] ?></td>
 			<td><?= $row['recommend'] ?></td>		
 			<td class="admin"><?= $row['minimum'] ?></td>	
-			<td class="admin"><?= $row['maximum'] ?></td>
-			<td class="admin" style="white-space: nowrap;"><?= $row['pontential'] ?></td>
-			<td class="admin">
-				<?= $row['desc'] ?><br/><br/>
-				No return<br/>
-				No Refund<br/>
-				Membeli berarti menyetujui<br/>
+			<td class="desc">
+				<b><?= $row['title'] ?></b>
+				<div class="admin">
+					<br/>
+					<?= $row['slug'] ?><br/><br/>
+					<div class="detail"></div><br/>
+					Tolong tanyakan stok terlebih dahulu<br/>
+					No return/refund<br/>
+					Membeli berarti menyetujui<br/>
+				</div>
 			</td>		
-			<td><?= $row['title'] ?></td>	
 			<td class="admin"> <a target="_blank" href="<?= $row['link'] ?>">GO</a></td>	
 		</tr>
-	<?php endforeach; ?>
+	<?php } ?>
 <?php } else { return false;} ?>

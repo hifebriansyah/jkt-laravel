@@ -11,8 +11,14 @@
 
 <!DOCTYPE html>
 <html>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 <head>
 	<style type="text/css">
+		body {
+			margin: 0;
+		}
 		table {
 			border-collapse: collapse;
 			width: 100%;
@@ -25,6 +31,12 @@
 		table td, table th {
 			border: 1px solid #ddd;
 			padding: 8px;
+		}
+
+		table tr > td:nth-child(2) {
+			padding: 0;
+			width: 250px;
+			vertical-align: midle;
 		}
 		
 		a {
@@ -48,13 +60,14 @@
 			border: 1px solid #93CAED;
 		}
 
-		div {
+		body > div {
 			margin-bottom: 16px;
 		}
 
 		form {
 			margin-top: 32px;
 			margin-bottom: 16px;
+			white-space: nowrap;
 		}
 
 		input {
@@ -68,6 +81,39 @@
 
 		input[type=submit] {
 			cursor: pointer;
+		}
+
+		td > img {
+			width: 100%;
+			min-width: 150px;
+			display: block;
+		}
+
+		.images {
+			padding: 4px;
+			background: #404040	;
+		}
+
+		.images:after {
+			content: " ";
+			clear: both;
+			display: block;
+		}
+
+		.images > img {
+			width: calc(20% - 4px);
+			float: left;
+			margin: 2px;
+			cursor: pointer;
+			border-radius: 4px;
+		}
+
+		.desc {
+			font-size: 14px;
+		}
+
+		.desc b {
+			font-size: 16px;
 		}
 
 		*:focus {outline:0px none transparent;}
@@ -103,7 +149,7 @@
 		<a href="?cat=toys-kids-and-baby<?= $admin ?>" class="<?= $cat == 'toys-kids-and-baby' ? 'active' : '' ?>">toys kids and baby</a>
 		<a href="?cat=hobby<?= $admin ?>" class="<?= $cat == 'hobby' ? 'active' : '' ?>">hobby</a>
 		<a href="?cat=sport-and-outdoor<?= $admin ?>" class="<?= $cat == 'sport-and-outdoor' ? 'active' : '' ?>">sport and outdoor</a>
-		<a href="?cat=fashion-make-up-and-beauty-care<?= $admin ?>" class="<?= $cat == 'fashion-make-up-and-beauty-care' ? 'active' : '' ?>">fashion make up and beauty care</a>
+		<a href="?cat=fashion-make-up-and-beauty-care<?= $admin ?>" class="<?= $cat == 'fashion-make-up-and-beauty-care' ? 'active' : '' ?>">fashion, make up & beauty</a>
 		<a href="?cat=pc-and-laptop<?= $admin ?>" class="<?= $cat == 'pc-and-laptop' ? 'active' : '' ?>">pc and laptop</a>
 		<a href="?cat=photography<?= $admin ?>" class="<?= $cat == 'photography' ? 'active' : '' ?>">photography</a>
 		<a href="?cat=smartphone-and-tablet<?= $admin ?>" class="<?= $cat == 'smartphone-and-tablet' ? 'active' : '' ?>">smartphone and tablet</a>
@@ -112,17 +158,14 @@
 		<thead>
 			<tr>
 				<th width="1">No</th>
-				<th width="1">img</th>
+				<th>img</th>
 				<th width="1">buy</th>
 				<th width="1">sell</th>
 				<th class="admin">min</th>
-				<th class="admin">max</th>
-				<th class="admin">potential</th>
-				<th class="admin">desc</th>
-				<th>title</th>
+				<th>desc</th>
 				<th class="admin">link</th>
 			</tr>
-		</thead>
+		</thead>	
 		<tbody>
 
 		</tbody>
@@ -143,8 +186,30 @@
 				if(data != "" && page <= 100) {
 					$('tbody').append(data);
 					getData(++page);
+
+					$('.need-detail').each(function() {
+						$(this).attr('class', '');
+						getDetail($(this), $(this).data('page'));
+					})
 				} else {
 					$('body > img').hide();
+				}
+			});
+		}
+
+		function getDetail(obj, page) {
+			obj.attr('data-page', '');
+			$.ajax({
+				url: "data-detail.php?page="+page
+			})
+			.done(function( data ) {
+				if(data) {
+					obj.find('.detail').html(data.detail);
+					obj.find('.images').html(data.srcs).promise().done(function(){
+						obj.find('.images > img').hover(function(){
+							$(this).parent().parent().find('img').eq(0).attr('src', $(this).attr('src'));
+						})  
+					});	
 				}
 			});
 		}

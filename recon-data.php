@@ -14,7 +14,7 @@
 
 	$html = file_get_html($url);
 
-	if(!$html->find('[data-testid="btnShopProductPageNext"]', 0) && $page!=1) {
+	if(!$html->find('[data-testid="btnShopProductPageNext"]', 0) && !$html->find('[data-testid="btnShopProductPagePrevious"]', 0)) {
 		return 0;
 	};
 

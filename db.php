@@ -11,5 +11,65 @@ return [
 	'olevo-gaming-mouse-pad-xl-desk-mat-800-x-300-mm-ro42',
 
 	'flipo-flip-mainan-rolling-square-flip-dancing-kinetic-energy' =>
-	'flipo-flip-mainan-rolling-square-flip-dancing-kinetic-energy-model-segi-empat-f131-black'
+	'flipo-flip-mainan-rolling-square-flip-dancing-kinetic-energy-model-segi-empat-f131-black',
+
+	'slozz-capo-gitar-aluminium-alloy-wood-design-with-bridge-pin-remover' =>
+	'slozz-capo-gitar-aluminium-alloy-wood-design-with-bridge-pin-remover-qbj-wooden',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
+
+	'lorem' =>
+	'lorem',
 ];
