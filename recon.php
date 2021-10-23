@@ -67,8 +67,38 @@
 				if(data != "" && page <= 100) {
 					$('tbody').append(data);
 					getData(++page);
+
+					$('.need-detail').each(function() {
+						$(this).attr('class', '');
+						getAgent($(this), $(this).data('page'));
+					})
 				} else {
 					$('body > img').hide();
+				}
+			});
+		}
+
+		function getAgent(obj, page) {
+			obj.attr('data-page', '');
+			$.ajax({
+				url: "recon-data-agent.php?page="+page
+			})
+			.done(function( data ) {
+				if(data) {
+					obj.find('.agent-buy').html(data.buy);
+					getToped(obj, page);
+				}
+			});
+		}
+
+		function getToped(obj, page) {
+			$.ajax({
+				url: "recon-data-toped.php?page="+page
+			})
+			.done(function( data ) {
+				if(data) {
+					obj.find('.toped-img').html(data.img);
+					obj.find('.toped-stock').html(data.stock);
 				}
 			});
 		}

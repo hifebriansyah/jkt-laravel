@@ -1,7 +1,7 @@
 <?php 
 	include 'simple_html_dom.php';
+	include 'helper.php';
 
-	$db = include 'db.php';
 	$config = include 'config.php';
 
 	$page = $_GET['page'] ?? 1;
@@ -13,6 +13,7 @@
     $results = [];
 
 	$html = file_get_html($url);
+	//$view = $html->find('#zeus-root', 0); die($view);
 
 	if(!$html->find('[data-testid="btnShopProductPageNext"]', 0) && !$html->find('[data-testid="btnShopProductPagePrevious"]', 0)) {
 		return 0;
@@ -26,46 +27,23 @@
 	    	$links = explode('/', $link);
 	    	$slug = $links[count($links) - 1];
 
-	    	$toped = file_get_html($link);
-	    	$buy = null;;
-
-	    	if(isset($db[$slug])) {
-	    		$agent = file_get_html('https://www.jakartanotebook.com/'.$db[$slug]);
-	    		$buy = stripPrice($agent->find('.price-final > span', 0)->plaintext);
-	    		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
-	    	}
-
-	    	if($toped->find('[data-testid="stock-label"] > b', 0)) {
-
-		    	$results[] = [
-		    		'link' => $link,
-		    		'stock' => $toped->find('[data-testid="stock-label"] > b', 0)->plaintext,
-		    		'img' => $toped->find('[data-testid="PDPImageMain"] img', 0)->getAttribute('src'),
-					'buy' => $buy ?? 'unavailable',
-					'price' => stripPrice($toped->find('.price', 0)->plaintext),
-					'slug' => $slug,
-		    	];
-	    	}
+	    	$results[] = [
+	    		'link' => $link,
+				'price' => stripPrice($product->find('[data-testid="linkProductPrice"]', 0)->plaintext),
+				'slug' => $slug,
+	    	];
 		} catch (Exception $e) {
 		}
-    }
-
-    function stripPrice($price) {
-    	return str_replace(['.', ' ', 'rp'], '', strtolower($price));
-    }
-
-    function dd($obj) {
-    	echo '<pre>', var_dump($obj);die();
     }
 ?>
 
 <?php if (count($results) > 0) { ?>
 	<?php foreach ($results as $key => $row): array_map('htmlentities', $row); ?>
-		<tr>
+		<tr class="need-detail" data-page="<?= $row['link'] ?>">
 			<td style="white-space: nowrap;"><?= $page.'-'.($key+1) ?></td>
-			<td><img height="150" src="<?= $row['img'] ?>"></td>
-			<td><?= $row['stock'] ?></td>
-			<td><?= $row['buy'] ?></td>
+			<td class="toped-img">...</td>
+			<td class="toped-stock">...</td>
+			<td class="agent-buy">...</td>
 			<td><?= $row['price'] ?></td>
 			<td><?= $row['slug'] ?></td>
 			<td> <a target="_blank" href="<?= $row['link'] ?>">GO</a></td>	
