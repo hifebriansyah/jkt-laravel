@@ -5,14 +5,16 @@
 
 	$config = include 'config.php';
 	$type = $_GET['cat'];
+	$sort = 'newitem';
 	$key = "";
 
 	if($_GET['key'] != '') {
 		$type = 'search';
 		$key = '&key='.$_GET['key'];
+		$sort = 'match';
 	}
 
-	$url = "https://www.jakartanotebook.com/".$type."?show=40&sort=newitem&price=&sku=&ready=0yjwK5".$key;
+	$url = "https://www.jakartanotebook.com/".$type."?show=40&sort=".$sort."newitem&price=&sku=&ready=0yjwK5".$key;
 
     $results = [];
 
@@ -72,6 +74,9 @@
 					Tolong tanyakan stok terlebih dahulu<br/>
 					No return/refund<br/>
 					Membeli berarti menyetujui<br/>
+					<br>
+					<div class="weight"></div>
+					<div class="warantly"></div>
 				</div>
 			</td>		
 			<td class="admin"> <a target="_blank" href="<?= $row['link'] ?>">GO</a></td>	

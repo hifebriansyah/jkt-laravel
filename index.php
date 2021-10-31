@@ -204,6 +204,8 @@
 			})
 			.done(function( data ) {
 				if(data) {
+					obj.find('.weight').html(data.weight);
+					obj.find('.warantly').html(data.warantly);
 					obj.find('.detail').html(data.detail);
 					obj.find('.images').html(data.srcs).promise().done(function(){
 						obj.find('.images > img').hover(function(){

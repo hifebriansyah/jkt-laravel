@@ -5,6 +5,7 @@
 
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <head>
 	<style type="text/css">
 		table {
@@ -43,6 +44,7 @@
 				<th width="1">stok</th>
 				<th width="1">buy</th>
 				<th width="1">sell</th>
+				<th>slug</th>
 				<th>slug</th>
 				<th width="1">link</th>
 			</tr>
@@ -99,6 +101,7 @@
 				if(data) {
 					obj.find('.toped-img').html(data.img);
 					obj.find('.toped-stock').html(data.stock);
+					obj.find('.agent-slug').html(data.slug);
 				}
 			});
 		}

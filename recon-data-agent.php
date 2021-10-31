@@ -1,4 +1,5 @@
 <?php 
+	ini_set('display_errors', 0);
 	header('Content-type: application/json');
 	include 'simple_html_dom.php';
 	include 'helper.php';
@@ -8,16 +9,22 @@
 
 	$links = explode('/', $_GET['page']);
 	$slug = $links[count($links) - 1];
-	$buy = 'none';
+	$buy = '...';
 
 	if(isset($db[$slug])) {
 		$html = file_get_html('https://www.jakartanotebook.com/'.$db[$slug]);
 		$buy = stripPrice($html->find('.price-final > span', 0)->plaintext);
 		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
+	} else {
+		$html = file_get_html('https://www.jakartanotebook.com/'.$slug);
+		if($html && $html->find('.price-final > span', 0)) {
+			$buy = stripPrice($html->find('.price-final > span', 0)->plaintext);
+			$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
+		}
 	}
 
 	$result = [
-		'buy' => $buy,
+		'buy' => number_format($buy, 0, ',', '.') ?? '...',
 	];
 
 	echo json_encode($result);

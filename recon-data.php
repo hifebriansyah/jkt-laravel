@@ -1,4 +1,6 @@
 <?php 
+	//ini_set('display_errors', 0);
+	//ini_set('default_socket_timeout', 5);
 	include 'simple_html_dom.php';
 	include 'helper.php';
 
@@ -8,13 +10,20 @@
 
 	$store = $_GET['store'] ?? 'hifebriansyah';
 
-	$url = "https://www.tokopedia.com/".$store."/page/".$page."?perpage=10";
+	$url = "https://www.tokopedia.com/".$store."/product/page/".$page."?perpage=10";
 
     $results = [];
 
 	$html = file_get_html($url);
-	//$view = $html->find('#zeus-root', 0); die($view);
 
+	for ($i=0; $i < 100 ; $i++) { 
+		if(strlen($html->plaintext) < 500) {
+			$html = file_get_html($url);
+		} else {
+			break;
+		}
+	}
+	
 	if(!$html->find('[data-testid="btnShopProductPageNext"]', 0) && !$html->find('[data-testid="btnShopProductPagePrevious"]', 0)) {
 		return 0;
 	};
@@ -31,6 +40,7 @@
 	    		'link' => $link,
 				'price' => stripPrice($product->find('[data-testid="linkProductPrice"]', 0)->plaintext),
 				'slug' => $slug,
+				'tries' => $i,
 	    	];
 		} catch (Exception $e) {
 		}
@@ -44,7 +54,8 @@
 			<td class="toped-img">...</td>
 			<td class="toped-stock">...</td>
 			<td class="agent-buy">...</td>
-			<td><?= $row['price'] ?></td>
+			<td><?= number_format($row['price'], 0, ',', '.') ?></td>
+			<td class="agent-slug">...</td>
 			<td><?= $row['slug'] ?></td>
 			<td> <a target="_blank" href="<?= $row['link'] ?>">GO</a></td>	
 		</tr>
