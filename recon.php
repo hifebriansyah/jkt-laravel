@@ -30,6 +30,18 @@
 			font-size: 24px;
 		}
 
+		.green {
+			color: green;
+		}
+
+		.red {
+			color: red;
+		}
+
+		.bg-red {
+			background: #EEEE9B;
+		}
+
 		*:focus {outline:0px none transparent;}
 	</style>
 
@@ -44,7 +56,7 @@
 				<th width="1">stok</th>
 				<th width="1">buy</th>
 				<th width="1">sell</th>
-				<th>slug</th>
+				<th width="1">margin</th>
 				<th>slug</th>
 				<th width="1">link</th>
 			</tr>
@@ -72,7 +84,8 @@
 
 					$('.need-detail').each(function() {
 						$(this).attr('class', '');
-						getAgent($(this), $(this).data('page'));
+						$(this).find('.no').html($(this).index() + 1);
+						getToped($(this), $(this).data('page'), $(this).data('price'));
 					})
 				} else {
 					$('body > img').hide();
@@ -80,20 +93,23 @@
 			});
 		}
 
-		function getAgent(obj, page) {
+		function getAgent(obj, page, price) {
 			obj.attr('data-page', '');
 			$.ajax({
-				url: "recon-data-agent.php?page="+page
+				url: "recon-data-agent.php?page="+page+"&price="+price
 			})
 			.done(function( data ) {
 				if(data) {
 					obj.find('.agent-buy').html(data.buy);
-					getToped(obj, page);
+					obj.find('.margin').html(data.margin);
+					if(!data.avail) {
+						obj.find('td').addClass('bg-red')
+					};
 				}
 			});
 		}
 
-		function getToped(obj, page) {
+		function getToped(obj, page, price) {
 			$.ajax({
 				url: "recon-data-toped.php?page="+page
 			})
@@ -102,6 +118,10 @@
 					obj.find('.toped-img').html(data.img);
 					obj.find('.toped-stock').html(data.stock);
 					obj.find('.agent-slug').html(data.slug);
+					page = (data.slug != '...')
+						? data.slug
+						: page;
+					getAgent(obj, page, price);
 				}
 			});
 		}

@@ -57,7 +57,7 @@
 <?php if (count($results) > 0) { ?>
 	<?php foreach ($results as $key => $row) { array_map('htmlentities', $row); ?>
 		<tr class="need-detail" data-page="<?= $row['link'] ?>">
-			<td style="white-space: nowrap;"><?= $_GET['page'].'-'.($key+1) ?></td>
+			<td class="no" style="white-space: nowrap;"><?= $_GET['page'].'-'.($key+1) ?></td>
 			<td>
 				<img src="<?= $row['src'] ?>">
 				<div class="images"></div>

@@ -49,14 +49,14 @@
 
 <?php if (count($results) > 0) { ?>
 	<?php foreach ($results as $key => $row): array_map('htmlentities', $row); ?>
-		<tr class="need-detail" data-page="<?= $row['link'] ?>">
-			<td style="white-space: nowrap;"><?= $page.'-'.($key+1) ?></td>
+		<tr class="need-detail" data-page="<?= $row['link'] ?>" data-price="<?= $row['price'] ?>">
+			<td class="no" style="white-space: nowrap;"><?= $page.'-'.($key+1) ?></td>
 			<td class="toped-img">...</td>
 			<td class="toped-stock">...</td>
 			<td class="agent-buy">...</td>
 			<td><?= number_format($row['price'], 0, ',', '.') ?></td>
-			<td class="agent-slug">...</td>
-			<td><?= $row['slug'] ?></td>
+			<td class="margin">...</td>
+			<td>'<?= $row['slug'] ?>' =><br/>'<span class="agent-slug"></span>',</td>
 			<td> <a target="_blank" href="<?= $row['link'] ?>">GO</a></td>	
 		</tr>
 	<?php endforeach; ?>

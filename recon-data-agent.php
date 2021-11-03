@@ -13,18 +13,21 @@
 
 	if(isset($db[$slug])) {
 		$html = file_get_html('https://www.jakartanotebook.com/'.$db[$slug]);
-		$buy = stripPrice($html->find('.price-final > span', 0)->plaintext);
-		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
 	} else {
 		$html = file_get_html('https://www.jakartanotebook.com/'.$slug);
-		if($html && $html->find('.price-final > span', 0)) {
-			$buy = stripPrice($html->find('.price-final > span', 0)->plaintext);
-			$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
-		}
 	}
+
+	if($html && $html->find('.price-final > span', 0)) {
+		$buy = stripPrice($html->find('.price-final > span', 0)->plaintext);
+		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
+	}
+
+	$margin = $_GET['price'] - $buy;
 
 	$result = [
 		'buy' => number_format($buy, 0, ',', '.') ?? '...',
+		'margin' => '<span class="'.($margin <= 0 ? 'red' : 'green').'">'.number_format($margin, 0, ',', '.').'</span>',
+		'avail' => $html->find('[data-stock]', 0)->getAttribute('data-stock') + 0
 	];
 
 	echo json_encode($result);

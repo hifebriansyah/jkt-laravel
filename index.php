@@ -189,6 +189,7 @@
 
 					$('.need-detail').each(function() {
 						$(this).attr('class', '');
+						$(this).find('.no').html($(this).index() + 1);
 						getDetail($(this), $(this).data('page'));
 					})
 				} else {
