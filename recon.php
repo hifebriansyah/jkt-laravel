@@ -93,7 +93,12 @@
 					})
 				} else {
 					$('body > img').hide();
-					$('body > input').show();
+					$('body > input').show(function(){
+						$('.toped-img img').each(function() {
+							src = $(this).attr('src');
+							$(this).attr('src', './img.php?img='+src)
+						})
+					});
 				}
 			});
 		}
