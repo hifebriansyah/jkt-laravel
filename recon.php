@@ -48,6 +48,10 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body>
+	<input style="display: none;" type="button" onclick="toJson()" value="export">
+	<form action="convert.php" method="post" target="_blank">
+		<input name="data" type="hidden" value="">
+	</form>
 	<table>
 		<thead>
 			<tr>
@@ -89,6 +93,7 @@
 					})
 				} else {
 					$('body > img').hide();
+					$('body > input').show();
 				}
 			});
 		}
@@ -124,6 +129,28 @@
 					getAgent(obj, page, price);
 				}
 			});
+		}
+
+		function toJson() {
+			data = [];
+			$('[data-page]').each(function() {
+				data.push([
+					$(this).find('.no').text(),
+					$(this).data('name'),
+					'-',
+					'in stock',
+					'new',
+					$(this).data('price'),
+					$(this).data('link'),
+					$(this).find('.toped-img img').attr('src'),
+					$(this).data('slug')
+				])
+			})
+
+			json = JSON.stringify(data);
+
+			$('input[name=data]').val(json);
+			$('form').submit();
 		}
 	</script>
 </body>
