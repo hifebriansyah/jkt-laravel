@@ -93,12 +93,7 @@
 					})
 				} else {
 					$('body > img').hide();
-					$('body > input').show(function(){
-						$('.toped-img img').each(function() {
-							src = $(this).attr('src');
-							$(this).attr('src', './img.php?img='+src)
-						})
-					});
+					$('body > input').show();
 				}
 			});
 		}
@@ -125,12 +120,19 @@
 			})
 			.done(function( data ) {
 				if(data) {
-					obj.find('.toped-img').html(data.img);
+					obj.find('.toped-img').html(data.img).find('img').click(function(){
+						$(this).unbind();
+						src = $(this).attr('src');
+						$(this).attr('src', './img.jpg?img='+src)
+					});
+
 					obj.find('.toped-stock').html(data.stock);
 					obj.find('.agent-slug').html(data.slug);
+
 					page = (data.slug != '...')
 						? data.slug
 						: page;
+
 					getAgent(obj, page, price);
 				}
 			});

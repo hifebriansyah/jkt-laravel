@@ -4,7 +4,7 @@ $img_src = $_GET['img'];
 
 $img = imagecreatefromjpeg($img_src);
 $color = imagecolorallocate($img, 3, 172, 14);
-$borderThickness = 8;
+$borderThickness =  8;
 
 drawBorder($img, $color, $borderThickness);
 
