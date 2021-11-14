@@ -7,6 +7,7 @@
 	$type = $_GET['cat'];
 	$sort = 'newitem';
 	$key = "";
+	$db =  json_decode(file_get_contents("db.json"), true);
 
 	if($_GET['key'] != '') {
 		$type = 'search';
@@ -32,6 +33,7 @@
 		    	$link = $product->find('a', 0)->getAttribute('href');
 		    	$links = explode('/', $link);	
 		    	$slug = $links[count($links) - 1];
+		    	$exist = in_array($slug, $db);
 
 		    	$results[] = [
 		    		'src' => $product->find('img', 0)->getAttribute('src'),
@@ -42,6 +44,7 @@
 		    		'title' => $product->find('a', 0)->getAttribute('title'),
 		    		'slug' => $slug,
 		    		'link' => $link,
+		    		'exist' => $exist,
 		    	];
     		} catch (Exception $e) {
     			
@@ -56,7 +59,7 @@
 
 <?php if (count($results) > 0) { ?>
 	<?php foreach ($results as $key => $row) { array_map('htmlentities', $row); ?>
-		<tr class="need-detail" data-page="<?= $row['link'] ?>">
+		<tr class="need-detail" data-page="<?= $row['link'] ?>" <?= ($row['exist'] ? 'data-exist' : '') ?>>
 			<td class="no" style="white-space: nowrap;"><?= $_GET['page'].'-'.($key+1) ?></td>
 			<td>
 				<img src="<?= $row['src'] ?>">

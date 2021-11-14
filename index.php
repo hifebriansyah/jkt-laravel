@@ -116,6 +116,10 @@
 			font-size: 16px;
 		}
 
+		[data-exist] > td:nth-child(1) {
+			background: #cff4fc;
+		}
+
 		*:focus {outline:0px none transparent;}
 
 		<?php if(!$admin) { ?>

@@ -150,7 +150,7 @@
 					$(this).data('price'),
 					$(this).data('link'),
 					$(this).find('.toped-img img').attr('src'),
-					$(this).data('slug')
+					$(this).find('.agent-slug').text()
 				])
 			})
 
