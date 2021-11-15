@@ -28,8 +28,13 @@
     			$buy = stripPrice($product->find('.product-list__price', 0)->plaintext);
 	    		$buy = $buy + (ceil($buy * $config['asuransi'] / 100) * 100) + (ceil($buy * $config['jasaToped'] / 100) * 100)  + $config['jasaSuplier'];
 	    		$recommend = stripPrice($product->find('.product-list__price--coret', 0)->plaintext ?? $buy) + $config['jasaSuplier'];
-	    		$minimum = ceil(($buy + ($buy * $config['margin'])) / 1000) * 1000;
+	    		$margin = $buy * $config['margin'];
 
+	    		$margin = ($margin >= $config['max_margin'])
+	    			? $config['max_margin']
+	    			: $margin;
+
+	    		$minimum = ceil(($buy + $margin) / 1000) * 1000;
 		    	$link = $product->find('a', 0)->getAttribute('href');
 		    	$links = explode('/', $link);	
 		    	$slug = $links[count($links) - 1];

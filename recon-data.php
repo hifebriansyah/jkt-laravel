@@ -1,6 +1,5 @@
 <?php 
-	//ini_set('display_errors', 0);
-	//ini_set('default_socket_timeout', 5);
+	ini_set('display_errors', 0);
 	include 'simple_html_dom.php';
 	include 'helper.php';
 
